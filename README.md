@@ -78,3 +78,11 @@ python telethon_access.py
 ```
  *On first run you would be asked for your Phone number and a verification code*
  *a valid SESSION would be generated and added to your .env file*
+
+# Adition by Anthony 
+* Adding an expiry date to the redis server
+* This is to prevent overloading of the server
+```python
+from datetime import timedelta
+r.setex(f"{cht}-{event.message.id}", timedelta(days=30), output_channel.id)
+```
