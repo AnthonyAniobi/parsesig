@@ -4,7 +4,7 @@ from telethon.tl.functions.channels import GetMessagesRequest
 import logging
 import redis
 from text_parser import emanuelefilter, transform_text
-from datetime import datetime   
+from datetime import timedelta
 from config import api_hash, api_id, channel_input, channel_output, session, REDISTOGO_URL
 logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
                     level=logging.WARNING)
@@ -47,7 +47,7 @@ async def forwarder(event):
         if valid:
             try:
                 output_channel = await client.send_message(cht, text, file=msg_file, reply_to=ref)
-                r.set(f"{cht}-{event.message.id}", output_channel.id)
+                r.setex(f"{cht}-{event.message.id}", timedelta(days=30), output_channel.id)
                 print(f"\u001b[32mSENT......{text}....SENT\u001b[37m....")
             except:
                 print(f"\u001b[31mNot Sent an error occurred {text[:70]} ...Not Sent\u001b[37m...") 
